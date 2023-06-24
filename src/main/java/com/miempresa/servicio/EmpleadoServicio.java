@@ -24,19 +24,21 @@ public class EmpleadoServicio implements IEmpleadoServicio{
 
 	@Override
 	public Optional<Empleado> listarId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findById(id);
 	}
 
 	@Override
 	public int guardar(Empleado p) {
-		// TODO Auto-generated method stub
+		Empleado em = repo.save(p);
+		if (!em.equals(null)) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	public void borrar(int id) {
-		// TODO Auto-generated method stub
+		repo.deleteById(id);
 		
 	}
 }

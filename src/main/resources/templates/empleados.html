@@ -4,7 +4,7 @@
 	<div th:insert="/fragmentos/header :: menu"> </div>
 	<br>
 	<div class="container mt-4">
-		<a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Agregar</a>
+		<a href="/agregarEmpleado" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Agregar</a>
 		<br>
 		<table class="table">
 		  <thead>
@@ -21,8 +21,9 @@
 		      <td th:text="${empleado.nombre}"></td>
 		      <td th:text="${empleado.rol}"></td>
 		      <td>
-		      	<a href="#" class="btn btn-success">Editar</a>
-		      	<a href=”#” class="btn btn-danger">Eliminar</a>
+		      	<a th:href="@{/editarEmpleado/}+${empleado.id}" class="btn btn-success">Editar</a>
+		      	<a th:onclick="eliminar([[${empleado.id}]])" 
+		      	class="btn btn-danger">Eliminar</a>
 		      </td>
 		    </tr>
 		  </tbody>
