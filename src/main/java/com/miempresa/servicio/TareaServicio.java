@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.miempresa.interfaceServicio.ITareaServicio;
 import com.miempresa.interfaces.ITarea;
+import com.miempresa.modelo.Empleado;
 import com.miempresa.modelo.Tarea;
 
 @Service
@@ -23,19 +24,21 @@ public class TareaServicio implements ITareaServicio {
 
 	@Override
 	public Optional<Tarea> listarId(int id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return repo.findById(id);
 	}
 
 	@Override
-	public int guardar(Tarea p) {
-		// TODO Auto-generated method stub
+	public int guardar(Tarea t) {
+		Tarea ta = repo.save(t);
+		if (!ta.equals(null)) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	public void borrar(int id) {
-		// TODO Auto-generated method stub
+		repo.deleteById(id);
 		
 	}
 

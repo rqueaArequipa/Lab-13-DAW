@@ -1,18 +1,24 @@
-<!DOCTYPE HTML>
-<head th:replace="fragmentos/header :: head"></head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="fragmentos/header :: head"></head>
 <body>
 	<div th:insert="/fragmentos/header :: menu"> </div>
 	<br>
-	<div class="container mt-4">
-		<a href="/agregarTarea" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Agregar</a>
-		<br>
-		<table class="table">
-		  <thead>
+    <div class="container mt-4">
+        <h2>Resultados de búsqueda</h2>
+
+        <div th:if="${noCoincidencia}">
+            <div class="alert alert-danger">
+				no se encontró ninguna coincidencia
+		</div>
+        </div>
+
+        <table class="table" th:if="${not #lists.isEmpty(tareas)}">
+            <thead>
 		    <tr>
 		      <th scope="col">ID</th>
-		      <th scope="col">DESCRIPCION</th>
-		      <th scope="col">FECHA</th>
-		      <th scope="col">REALIZADO</th>
+		      <th scope="col">NOMBRES</th>
+		      <th scope="col">ROL</th>
 		      <th scope="col">ACCIONES</th>
 		    </tr>
 		  </thead>
@@ -30,8 +36,9 @@
 		      </td>
 		    </tr>
 		  </tbody>
-		</table>
-	</div>
-	<script src="funciones.js"></script>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

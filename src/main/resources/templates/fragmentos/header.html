@@ -24,9 +24,32 @@
 		        <a class="btn btn-warning btn-lg" href="#">Asignar Tareas<span class="sr-only">(current)</span></a>
 		      </li>
 		    </ul>
-		    <form class="form-inline my-2 my-lg-0" action="/buscarempleado">
-	      <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar" name="nombre">
-	      <button class="btn btn-success  my-2 my-sm-0" type="submit">Buscar</button>
+		    <form class="form-inline my-2 my-lg-0" id="searchForm" action="">
+				<select id="searchType" class="form-control mr-sm-2">
+			        <option value="empleado">Buscar empleado</option>
+			        <option value="tarea">Buscar tarea</option>
+			    </select>
+			    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar" name="search">
+			    <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
+			</form>
+			
+			<script>
+			    document.getElementById("searchForm").addEventListener("submit", function (event) {
+			        event.preventDefault(); // Prevent form submission
+			
+			        var searchType = document.getElementById("searchType").value;
+			        var actionUrl;
+			
+			        if (searchType === "empleado") {
+			            actionUrl = "/buscarEmpleado";
+			        } else if (searchType === "tarea") {
+			            actionUrl = "/buscarTarea";
+			        }
+			
+			        document.getElementById("searchForm").action = actionUrl;
+			        document.getElementById("searchForm").submit();
+			    });
+			</script>
 	    </form>
 		  </div>
 		</nav>

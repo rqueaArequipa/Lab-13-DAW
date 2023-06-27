@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.miempresa.interfaceServicio.IEmpleadoServicio;
 import com.miempresa.interfaceServicio.ITareaServicio;
 import com.miempresa.interfaces.IEmpleado;
+import com.miempresa.interfaces.ITarea;
 import com.miempresa.modelo.Empleado;
 import com.miempresa.modelo.Tarea;
 
@@ -33,6 +34,9 @@ public class controlador {
 	@Autowired
 	private IEmpleado empleado;
 	
+	@Autowired
+	private ITarea IPtarea;
+	
 	@GetMapping("/listarEmpleados")
 	public String listarEmpleados(Model model) {
 		List<Empleado> empleados = servicio.listar();
@@ -40,15 +44,8 @@ public class controlador {
 		return "empleados";
 	}
 	
-	@GetMapping("/listarTareas")
-	public String listarTareas(Model model) {
-		List<Tarea> tareas = TServicio.listar();
-		model.addAttribute("tareas", tareas);
-		return "tareas";
-	}
-	
-	@GetMapping("/buscarempleado")
-    public String buscarEmpleado(@RequestParam("nombre") String nombre, Model model) {
+	@GetMapping("/buscarEmpleado")
+    public String buscarEmpleado(@RequestParam("search") String nombre, Model model) {
         List<Empleado> empleados = empleado.findByNombre(nombre);
 
         if (empleados.isEmpty()) {
@@ -90,6 +87,60 @@ public class controlador {
 		servicio.borrar(id);
 		return "redirect:/listarEmpleados";
 	}
+	
+	///-----------TAREAS---------------------
+	
+	@GetMapping("/listarTareas")
+	public String listarTareas(Model model) {
+		List<Tarea> tareas = TServicio.listar();
+		model.addAttribute("tareas", tareas);
+		return "tareas";
+	}
+	
+	@GetMapping("/agregarTarea")
+	public String agregarTareas(Model model) {
+		model.addAttribute("tarea", new Tarea());
+		return "agregarTarea";
+	}
+	
+	@PostMapping("/guardarTarea")
+	public String guardarTarea(Tarea t) {
+		TServicio.guardar(t);
+		return "redirect:/listarTareas";
+	}
+	
+	@GetMapping("/editarTarea/{id}")
+	public String editarTarea(@PathVariable int id, RedirectAttributes atributos) {
+		Optional<Tarea> tarea = TServicio.listarId(id);
+		atributos.addFlashAttribute("tarea", tarea);
+		return "redirect:/mostrarTarea";
+	}
+	
+	@GetMapping("/mostrarTarea")
+	public String mostrarTarea(@ModelAttribute("tarea") Tarea t, Model model) {
+		model.addAttribute("tarea", t);
+		return "agregarTarea";
+	}
+	
+	@GetMapping("/eliminarTarea/{id}")
+	public String eliminarTarea(@PathVariable int id) {
+		TServicio.borrar(id);
+		return "redirect:/listarTareas";
+	}
+	
+	@GetMapping("/buscarTarea")
+    public String buscarTarea(@RequestParam("search") String descripcion, Model model) {
+        List<Tarea> tareas = IPtarea.findByDescripcion(descripcion);
+
+        if (tareas.isEmpty()) {
+            model.addAttribute("noCoincidencia", true);
+        } else {
+            model.addAttribute("tareas", tareas);
+        }
+
+        return "buscarTarea";
+    }
+	
 }
 
 
